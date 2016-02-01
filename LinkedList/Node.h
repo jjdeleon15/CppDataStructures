@@ -1,4 +1,7 @@
-#pragma once 
+#ifndef NODE_H_
+#define NODE_H_
+
+#define nullptr 0
 
 template <class T>
 struct Node {
@@ -6,6 +9,8 @@ struct Node {
 	Node *next;
 	Node(T data) {
 		this->data = data;
-		next = NULL;
+		next = nullptr;
 	}
 };
+
+#endif //NODE_H_

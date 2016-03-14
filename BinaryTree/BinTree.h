@@ -43,18 +43,18 @@ void BinTree<T>::deleteTree(BiNode<T> *r) {
 
 template <class T>
 void BinTree<T>::insert(T data) {
-	return this.insert(root, data);
+	this.insert(root, data);
 }
 
-template <class T>
+template <class T>//fixing
 BiNode<T> *BinTree<T>::insert(BiNode<T> *r, T data) {
 	if (r == NULL) {
 		r = new BiNode<T>(data);
 		nNodes++;
 	} else if (data < r->data) {//Less than, Go left
-		r = insert(r->left, data);
+		r->left = insert(r->left, data);
 	} else { //Greater than or equal, Go right
-		r = insert(r->right, data);
+		r->right = insert(r->right, data);
 	}
 	return r;
 }

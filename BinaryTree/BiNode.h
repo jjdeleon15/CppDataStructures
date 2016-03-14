@@ -1,5 +1,5 @@
 #ifndef BINODE_H_
-#define NODE_H_
+#define BINODE_H_
 
 template <class T>
 struct BiNode {

@@ -6,11 +6,13 @@
 template <class T>
 class BinTree {
 public:
+	BinTree();//TEST
+	~BinTree();//TEST
+
 	void insert(T data);//TEST
 	T remove(T data);//TODO
 	bool contains(T data);//TEST
-	BinTree();//TEST
-	~BinTree();//TEST
+	
 private:
 	BiNode<T> *root;
 	int nNodes;
@@ -22,19 +24,19 @@ private:
 #endif /* BINTREE_H_ */
 
 template <class T>
-bool BinTree<T>::BinTree<T>() {
+BinTree<T>::BinTree() {
 	root = NULL;
 	nNodes = 0;
 }
 
 template <class T>
-BinTree<T>::~BinTree<T>() {
+BinTree<T>::~BinTree() {
 	deleteTree(root);
 }
 
 template <class T>
 void BinTree<T>::deleteTree(BiNode<T> *r) {
-	if (r == NULL) { return; }
+	if (r == NULL) return;
 	deleteTree(r->left);
 	deleteTree(r->right);
 	delete r;
@@ -43,7 +45,7 @@ void BinTree<T>::deleteTree(BiNode<T> *r) {
 
 template <class T>
 void BinTree<T>::insert(T data) {
-	this.insert(root, data);
+	root = insert(root, data);
 }
 
 template <class T>//fixing
@@ -60,12 +62,12 @@ BiNode<T> *BinTree<T>::insert(BiNode<T> *r, T data) {
 }
 
 template <class T>
-bool BiNode<T>::contains(T data) {
+bool BinTree<T>::contains(T data) {
 	BiNode<T> *iter = root;
 	while (iter != NULL) {
 		if (iter->data == data) {
 			return true;
-		}  else if (data < r->data) {//Less than, Go left
+		}  else if (data < iter->data) {//Less than, Go left
 			iter = iter->left;
 		} else { //Greater than or equal, Go right
 			iter = iter->right;

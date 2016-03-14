@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
 		intTree.insert(atoi(intBuff.c_str()));
 	}
 
+	intTree.printTree(true, cout);
 
 
 	return 0;

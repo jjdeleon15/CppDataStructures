@@ -2,6 +2,8 @@
 #define BINTREE_H_
 
 #include "BiNode.h"
+#include <ostream>
+using namespace std;
 
 template <class T>
 class BinTree {
@@ -12,13 +14,14 @@ public:
 	void insert(T data);//TEST
 	T remove(T data);//TODO
 	bool contains(T data);//TEST
-	
+	void printTree(bool ascending, ostream &out);
 private:
 	BiNode<T> *root;
 	int nNodes;
 
 	BiNode<T> *insert(BiNode<T> *r, T data);//TEST
 	void deleteTree(BiNode<T> *r);//TEST
+	void printTree(BiNode<T> *r, bool ascending, ostream &out);
 };
 
 #endif /* BINTREE_H_ */
@@ -74,6 +77,19 @@ bool BinTree<T>::contains(T data) {
 		}
 	}
 	return false;
+}
+
+template <class T>
+void BinTree<T>::printTree(bool ascending, ostream &out) {
+	printTree(root, ascending, out);
+}
+
+template <class T>
+void BinTree<T>::printTree(BiNode<T> *r, bool ascending, ostream &out) {
+	if (r == NULL) return;
+	printTree(r->left, ascending, out);
+	out << r->data << endl;
+	printTree(r->right, ascending, out);
 }
 
 

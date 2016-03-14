@@ -18,7 +18,22 @@ int main(int argc, char *argv[]) {
 		intTree.insert(atoi(intBuff.c_str()));
 	}
 
-	intTree.printTree(true, cout);
+	cout << "Stats\n" << "Num of Nodes: " << intTree.numOfNodes() << endl
+		<< "Depth: " << intTree.depth() << endl << endl;
+
+	if (argc != 3) return 0;
+
+	string options(argv[2]);
+	int maxInd = options.length() ;
+	bool printTree = false, ascending = true;
+	if (options.find('-') < maxInd) {
+		if (options.find('p') < maxInd) {
+			if (options.find('d') < maxInd) ascending = false;
+			intTree.printTree(ascending, cout);
+		}
+	}
+
+	// intTree.printTree(true, cout);
 
 
 	return 0;

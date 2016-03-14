@@ -15,6 +15,8 @@ public:
 	T remove(T data);//TODO
 	bool contains(T data);//TEST
 	void printTree(bool ascending, ostream &out);
+	int depth();
+	int numOfNodes();
 private:
 	BiNode<T> *root;
 	int nNodes;
@@ -22,6 +24,7 @@ private:
 	BiNode<T> *insert(BiNode<T> *r, T data);//TEST
 	void deleteTree(BiNode<T> *r);//TEST
 	void printTree(BiNode<T> *r, bool ascending, ostream &out);
+	void getDepth(BiNode<T> *r, int curDepth, int &maxDepth);
 };
 
 #endif /* BINTREE_H_ */
@@ -87,13 +90,33 @@ void BinTree<T>::printTree(bool ascending, ostream &out) {
 template <class T>
 void BinTree<T>::printTree(BiNode<T> *r, bool ascending, ostream &out) {
 	if (r == NULL) return;
-	printTree(r->left, ascending, out);
+	if (ascending)	printTree(r->left, ascending, out);
+	else printTree(r->right, ascending, out);
 	out << r->data << endl;
-	printTree(r->right, ascending, out);
+	if (ascending) printTree(r->right, ascending, out);
+	else printTree(r->left, ascending, out);
+	
 }
 
+template <class T>
+int BinTree<T>::depth() {
+	int maxDepth = 0;
+	getDepth(root, 0, maxDepth);
+	return maxDepth;
+}
 
+template <class T>
+void BinTree<T>::getDepth(BiNode<T> *r, int curDepth, int &maxDepth) {
+	if (r == NULL) return;
+	if (curDepth > maxDepth) maxDepth = curDepth;
+	getDepth(r->left, curDepth + 1, maxDepth);
+	getDepth(r->right, curDepth + 1, maxDepth);
+}
 
+template <class T>
+int BinTree<T>::numOfNodes() {
+	return nNodes;
+}
 
 
 

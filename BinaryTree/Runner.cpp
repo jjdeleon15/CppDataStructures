@@ -32,9 +32,5 @@ int main(int argc, char *argv[]) {
 			intTree.printTree(ascending, cout);
 		}
 	}
-
-	// intTree.printTree(true, cout);
-
-
 	return 0;
 }

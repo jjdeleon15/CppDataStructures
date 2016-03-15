@@ -31,7 +31,7 @@ private:
 
 template <class T>
 BinTree<T>::BinTree() {
-	root = NULL;
+	root = nullptr;
 	nNodes = 0;
 }
 
@@ -42,7 +42,7 @@ BinTree<T>::~BinTree() {
 
 template <class T>
 void BinTree<T>::deleteTree(BiNode<T> *r) {
-	if (r == NULL) return;
+	if (r == nullptr) return;
 	deleteTree(r->left);
 	deleteTree(r->right);
 	delete r;
@@ -56,7 +56,7 @@ void BinTree<T>::insert(T data) {
 
 template <class T>//fixing
 BiNode<T> *BinTree<T>::insert(BiNode<T> *r, T data) {
-	if (r == NULL) {
+	if (r == nullptr) {
 		r = new BiNode<T>(data);
 		nNodes++;
 	} else if (data < r->data) {//Less than, Go left
@@ -70,7 +70,7 @@ BiNode<T> *BinTree<T>::insert(BiNode<T> *r, T data) {
 template <class T>
 bool BinTree<T>::contains(T data) {
 	BiNode<T> *iter = root;
-	while (iter != NULL) {
+	while (iter != nullptr) {
 		if (iter->data == data) {
 			return true;
 		}  else if (data < iter->data) {//Less than, Go left
@@ -89,7 +89,7 @@ void BinTree<T>::printTree(bool ascending, ostream &out) {
 
 template <class T>
 void BinTree<T>::printTree(BiNode<T> *r, bool ascending, ostream &out) {
-	if (r == NULL) return;
+	if (r == nullptr) return;
 	if (ascending)	printTree(r->left, ascending, out);
 	else printTree(r->right, ascending, out);
 	out << r->data << endl;
@@ -107,7 +107,7 @@ int BinTree<T>::depth() {
 
 template <class T>
 void BinTree<T>::getDepth(BiNode<T> *r, int curDepth, int &maxDepth) {
-	if (r == NULL) return;
+	if (r == nullptr) return;
 	if (curDepth > maxDepth) maxDepth = curDepth;
 	getDepth(r->left, curDepth + 1, maxDepth);
 	getDepth(r->right, curDepth + 1, maxDepth);
@@ -117,16 +117,4 @@ template <class T>
 int BinTree<T>::numOfNodes() {
 	return nNodes;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

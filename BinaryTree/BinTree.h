@@ -8,23 +8,24 @@ using namespace std;
 template <class T>
 class BinTree {
 public:
-	BinTree();//TEST
-	~BinTree();//TEST
+	BinTree();//DONE
+	~BinTree();//DONE
 
-	void insert(T data);//TEST
-	T remove(T data);//TODO
+	void insert(T data);//DONE
+	void remove(T data);//TODO
 	bool contains(T data);//TEST
-	void printTree(bool ascending, ostream &out);
-	int depth();
-	int numOfNodes();
+	void printTree(bool ascending, ostream &out);//DONE
+	int depth();//DONE
+	int numOfNodes();//DONE
 private:
 	BiNode<T> *root;
 	int nNodes;
 
-	BiNode<T> *insert(BiNode<T> *r, T data);//TEST
-	void deleteTree(BiNode<T> *r);//TEST
-	void printTree(BiNode<T> *r, bool ascending, ostream &out);
-	void getDepth(BiNode<T> *r, int curDepth, int &maxDepth);
+	BiNode<T> *insert(BiNode<T> *r, T data);//DONE
+	BiNode<T> *remove(BiNode<T> *r, T data);//TODO
+	void deleteTree(BiNode<T> *r);//DONE
+	void printTree(BiNode<T> *r, bool ascending, ostream &out);//DONE
+	void getDepth(BiNode<T> *r, int curDepth, int &maxDepth);//DONE
 };
 
 #endif /* BINTREE_H_ */
@@ -54,7 +55,7 @@ void BinTree<T>::insert(T data) {
 	root = insert(root, data);
 }
 
-template <class T>//fixing
+template <class T>
 BiNode<T> *BinTree<T>::insert(BiNode<T> *r, T data) {
 	if (r == nullptr) {
 		r = new BiNode<T>(data);
@@ -96,6 +97,51 @@ void BinTree<T>::printTree(BiNode<T> *r, bool ascending, ostream &out) {
 	if (ascending) printTree(r->right, ascending, out);
 	else printTree(r->left, ascending, out);
 	
+}
+
+template <class T>
+void BinTree<T>::remove(T data) {
+	root = remove(root, data);
+}
+
+template <class T>
+BiNode<T> *BinTree<T>::remove(BiNode<T> *r, T data) {
+	if (r == nullptr) return nullptr;
+	BiNode<T> *toDelete = nullptr;
+	if (data == r->data) {//Found node to delete
+		toDelete = r;
+	} else if (data < r->data) {//Go Left
+		r->left = remove(r->left, data);
+	} else { //Go right
+		r->right = remove(r->right, data);
+	}
+	if (toDelete == nullptr) return r;
+	BiNode<T> *tmp = nullptr;
+	if (toDelete->left != nullptr) {
+		tmp = toDelete->left;
+		if (tmp->right != nullptr) {
+			//TODO
+		} else {
+			toDelete->data = tmp->data;
+			toDelete->left = tmp->left;
+			delete tmp;
+			return toDelete;
+		}
+	} 
+	if (toDelete->right != nullptr) {
+		tmp = toDelete->right;
+		if (tmp->left != nullptr) {
+			//TODO
+		} else {
+			toDelete->data = tmp->data;
+			toDelete->right = tmp->right;
+			delete tmp;
+			return toDelete;
+		}
+	} 
+	delete toDelete;
+	return nullptr;
+
 }
 
 template <class T>

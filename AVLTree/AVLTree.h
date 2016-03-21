@@ -26,6 +26,7 @@ private:
 	void deleteTree(AVLNode<T> *r);//TEST
 	void printTree(AVLNode<T> *r, bool ascending, ostream &out);
 	void getDepth(AVLNode<T> *r, int curDepth, int &maxDepth);
+	AVLNode<T> *rotate(AVLNode<T> *r, bool left);
 };
 
 #endif /* AVLTREE_H_ */
@@ -50,6 +51,28 @@ void AVLTree<T>::deleteTree(AVLNode<T> *r) {
 	nNodes = 0;
 }	
 
+/*
+	r will rotate down left or right depending on the bool passed
+	@returns a pointer to the node replacing r's position
+*/
+template <class T>
+AVLNode<T> *AVLTree<T>::rotate(AVLNode<T> *r, bool left) {
+	AVLNode<T> * tmp;
+	if (left) {
+		tmp = r->right;
+		r->right = tmp->left;
+		r->evalHeight();
+		tmp->left = r;
+	} else {
+		tmp = r->left;
+		r->left = tmp->right;
+		r->evalHeight();
+		tmp->right = r;
+	}
+	tmp->evalHeight();
+	return tmp;
+}
+
 template <class T>
 void AVLTree<T>::insert(T data) {
 	root = insert(root, data);
@@ -66,6 +89,23 @@ AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *r, T &data) {
 		r->right = insert(r->right, data);
 	}
 	r->evalHeight();
+	int bal = r->getBalance();
+	bool left = true, right = false;
+	if (bal > 1) {//Left Heavy
+		if (r->left->getBalance() > 0) {//Zig-Zig:Left-Left
+			r = rotate(r, right);
+		} else {//Zig-Zag:Left-Right
+			r->left = rotate(r->left, left);
+			r = rotate(r, right);
+		}
+	} else if (bal < -1) {//Right Heavy
+		if (r->right->getBalance() < 0) {//Zig-Zig:Right-Right
+			r = rotate(r, left);
+		} else {//Zig-Zag:Right-Left
+			r->right = rotate(r->right, right);
+			r = rotate(r, left);
+		}
+	}
 	return r;
 }
 

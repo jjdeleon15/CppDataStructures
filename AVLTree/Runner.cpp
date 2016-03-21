@@ -31,6 +31,9 @@ int main(int argc, char *argv[]) {
 			if (options.find('d') < maxInd) ascending = false;
 			intTree.printTree(ascending, cout);
 		}
+	} else {
+		cout << "usage: intTreeTest <filename> <-pd(print, print descending>\n";
+		exit(-1);
 	}
 	return 0;
 }

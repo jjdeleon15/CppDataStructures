@@ -12,7 +12,7 @@ public:
 	~AVLTree();//TEST
 
 	void insert(T data);//TEST
-	bool remove(T data);//TODO
+	bool remove(T data);//TEST
 	bool contains(T data);//TEST
 	void printTree(bool ascending, ostream &out);
 	int depth();
@@ -21,8 +21,8 @@ private:
 	AVLNode<T> *root;
 	int nNodes;
 
-	AVLNode<T> *insert(AVLNode<T> *r, T data);//TEST
-	AVLNode<T> *remove(AVLNode<T> *r, T data);//TEST
+	AVLNode<T> *insert(AVLNode<T> *r, T &data);//TEST
+	AVLNode<T> *remove(AVLNode<T> *r, T &data);//TODO
 	void deleteTree(AVLNode<T> *r);//TEST
 	void printTree(AVLNode<T> *r, bool ascending, ostream &out);
 	void getDepth(AVLNode<T> *r, int curDepth, int &maxDepth);
@@ -56,7 +56,7 @@ void AVLTree<T>::insert(T data) {
 }
 
 template <class T>
-AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *r, T data) {
+AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *r, T &data) {
 	if (r == nullptr) {
 		r = new AVLNode<T>(data);
 		nNodes++;
@@ -65,6 +65,7 @@ AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *r, T data) {
 	} else { //Greater than or equal, Go right
 		r->right = insert(r->right, data);
 	}
+	r->evalHeight();
 	return r;
 }
 
@@ -93,7 +94,7 @@ void AVLTree<T>::printTree(AVLNode<T> *r, bool ascending, ostream &out) {
 	if (r == nullptr) return;
 	if (ascending)	printTree(r->left, ascending, out);
 	else printTree(r->right, ascending, out);
-	out << r->data << endl;
+	out << r->data.toString() << endl;
 	if (ascending) printTree(r->right, ascending, out);
 	else printTree(r->left, ascending, out);
 	
@@ -108,43 +109,8 @@ bool AVLTree<T>::remove(T data) {
 }
 
 template <class T>
-AVLNode<T> *AVLTree<T>::remove(AVLNode<T> *r, T data) {
-	if (r == nullptr) return nullptr;
-	AVLNode<T> *toDelete = nullptr;
-	if (data == r->data) {//Found node to delete
-		toDelete = r;
-	} else if (data < r->data) {//Go Left
-		r->left = remove(r->left, data);
-	} else { //Go right
-		r->right = remove(r->right, data);
-	}
-	if (toDelete == nullptr) return r;
-	AVLNode<T> *tmp = nullptr;
-	if (toDelete->left != nullptr) {
-		tmp = toDelete->left;
-		if (tmp->right != nullptr) {
-			//TODO
-		} else {
-			toDelete->data = tmp->data;
-			toDelete->left = tmp->left;
-			delete tmp;
-			return toDelete;
-		}
-	} 
-	if (toDelete->right != nullptr) {
-		tmp = toDelete->right;
-		if (tmp->left != nullptr) {
-			//TODO
-		} else {
-			toDelete->data = tmp->data;
-			toDelete->right = tmp->right;
-			delete tmp;
-			return toDelete;
-		}
-	} 
-	delete toDelete;
-	return nullptr;
-
+AVLNode<T> *AVLTree<T>::remove(AVLNode<T> *r, T &data) {
+	//TODO
 }
 
 template <class T>

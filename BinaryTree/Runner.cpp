@@ -1,36 +1,53 @@
 #include <iostream>
 #include <fstream>
+#include "PeopleParser.h"
 #include "BinTree.h"
 using namespace std;
 
+Person parseLineForPerson(const string line);
+
+void invalidUsage() {
+	cout << "usage: perBinTree <filename> [-pd(print, print descending] [maxEntries]\n";
+	exit(-1);
+}
+
 int main(int argc, char *argv[]) {
-	if (argc < 2) {
-		cout << "usage: intTreeTest <filename> <-pd(print, print descending>\n";
-		exit(-1);
-	}
+	if (argc < 2 || argc > 4) invalidUsage();
 
-	ifstream fin(argv[1]);
-	BinTree<int> intTree;
-	string intBuff;
-	while (!fin.eof()) {
-		getline(fin, intBuff);
-		if (fin.fail()) break;
-		intTree.insert(atoi(intBuff.c_str()));
-	}
-
-	cout << "Stats\n" << "Num of Nodes: " << intTree.numOfNodes() << endl
-		<< "Depth: " << intTree.depth() << endl << endl;
-
-	if (argc != 3) return 0;
-
-	string options(argv[2]);
-	int maxInd = options.length() ;
-	bool printTree = false, ascending = true;
-	if (options.find('-') < maxInd) {
-		if (options.find('p') < maxInd) {
-			if (options.find('d') < maxInd) ascending = false;
-			intTree.printTree(ascending, cout);
+	bool printTree = false, ascending = false;
+	long long int max = LLONG_MAX;
+	string options;
+	if (argc > 2) {
+		options = argv[2];
+		int maxInd = options.length() ;
+		if (options[0] == '-') {
+			printTree = (options.find('p') < maxInd) ? true : false;
+			ascending = (options.find('d') < maxInd) ? false : true;
+		} else {
+			max = stol(argv[2]);
 		}
+		if (argc == 4) max = stol(argv[3]);
+	} 
+
+	BinTree<Person> pplTree;
+	string line;
+	Person perBuff;
+	ifstream fin(argv[1]);
+	if (fin.fail()) {
+		cout << "Could not open file: " << argv[1] << endl;
+		exit(-1);	
+	} 
+	for (long long int i = 0; i < max; i++) {
+		getline(fin, line);
+		if (fin.fail()) break;
+		perBuff = parseLineForPerson(line);
+		pplTree.insert(perBuff);
 	}
+	fin.close();
+	cout << "Stats: " << "Num of Nodes = " << pplTree.numOfNodes()
+		<< ", Depth = " << pplTree.depth() << endl;
+	if (printTree) pplTree.printTree(ascending, cout);
+
+	//TODO add search statistics, depth is correct though
 	return 0;
 }

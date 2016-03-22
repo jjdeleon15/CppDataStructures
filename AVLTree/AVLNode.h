@@ -1,7 +1,6 @@
 #ifndef AVLNODE_H_
 #define AVLNODE_H_
 
-#include <stddef.h>
 #define nullHeight -1
 
 template <class T>

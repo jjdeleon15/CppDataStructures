@@ -7,7 +7,7 @@ using namespace std;
 Person parseLineForPerson(const string line);
 
 void invalidUsage() {
-	cout << "usage: perTreeTest <filename> [-pd(print, print descending] [maxEntries]\n";
+	cout << "usage: perAVLTreeTest <filename> [-pd(print, print descending] [maxEntries]\n";
 	exit(-1);
 }
 
@@ -44,11 +44,10 @@ int main(int argc, char *argv[]) {
 		pplTree.insert(perBuff);
 	}
 	fin.close();
-
-	cout << "Stats\n" << "Num of Nodes: " << pplTree.numOfNodes() << endl
-		<< "Depth: " << pplTree.depth() << endl << endl;
-
+	cout << "Stats: " << "Num of Nodes = " << pplTree.numOfNodes() 
+		<< ", Depth = " << pplTree.depth() << endl;
 	if (printTree) pplTree.printTree(ascending, cout);
 
+	//TODO add search statistics, depth is correct though
 	return 0;
 }

@@ -5,7 +5,7 @@
 #include <ostream>
 using namespace std;
 
-template <class T>
+template <typename T>
 class AVLTree {
 public:
 	AVLTree();//TEST
@@ -24,25 +24,27 @@ private:
 	AVLNode<T> *insert(AVLNode<T> *r, T &data);//TEST
 	AVLNode<T> *remove(AVLNode<T> *r, T &data);//TODO
 	void deleteTree(AVLNode<T> *r);//TEST
-	void printTree(AVLNode<T> *r, bool ascending, ostream &out);
+	void printTree(AVLNode<T> *r, bool ascending, ostream &out);//DONE
+	void printAscending(AVLNode<T> *r, ostream &out);
+	void printDescending(AVLNode<T> *r, ostream &out);
 	void getDepth(AVLNode<T> *r, int curDepth, int &maxDepth);
 	AVLNode<T> *rotate(AVLNode<T> *r, bool left);
 };
 
 #endif /* AVLTREE_H_ */
 
-template <class T>
+template <typename T>
 AVLTree<T>::AVLTree() {
 	root = nullptr;
 	nNodes = 0;
 }
 
-template <class T>
+template <typename T>
 AVLTree<T>::~AVLTree() {
 	deleteTree(root);
 }
 
-template <class T>
+template <typename T>
 void AVLTree<T>::deleteTree(AVLNode<T> *r) {
 	if (r == nullptr) return;
 	deleteTree(r->left);
@@ -55,7 +57,7 @@ void AVLTree<T>::deleteTree(AVLNode<T> *r) {
 	r will rotate down left or right depending on the bool passed
 	@returns a pointer to the node replacing r's position
 */
-template <class T>
+template <typename T>
 AVLNode<T> *AVLTree<T>::rotate(AVLNode<T> *r, bool left) {
 	AVLNode<T> * tmp;
 	if (left) {
@@ -73,12 +75,12 @@ AVLNode<T> *AVLTree<T>::rotate(AVLNode<T> *r, bool left) {
 	return tmp;
 }
 
-template <class T>
+template <typename T>
 void AVLTree<T>::insert(T data) {
 	root = insert(root, data);
 }
 
-template <class T>
+template <typename T>
 AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *r, T &data) {
 	if (r == nullptr) {
 		r = new AVLNode<T>(data);
@@ -106,10 +108,11 @@ AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *r, T &data) {
 			r = rotate(r, left);
 		}
 	}
+	r->evalHeight();
 	return r;
 }
 
-template <class T>
+template <typename T>
 bool AVLTree<T>::contains(T data) {
 	AVLNode<T> *iter = root;
 	while (iter != nullptr) {
@@ -124,23 +127,34 @@ bool AVLTree<T>::contains(T data) {
 	return false;
 }
 
-template <class T>
+template <typename T>
 void AVLTree<T>::printTree(bool ascending, ostream &out) {
 	printTree(root, ascending, out);
 }
 
-template <class T>
+template <typename T>
 void AVLTree<T>::printTree(AVLNode<T> *r, bool ascending, ostream &out) {
-	if (r == nullptr) return;
-	if (ascending)	printTree(r->left, ascending, out);
-	else printTree(r->right, ascending, out);
-	out << r->data.toString() << endl;
-	if (ascending) printTree(r->right, ascending, out);
-	else printTree(r->left, ascending, out);
-	
+	if (ascending) printAscending(root, out);
+	else printDescending(root, out);
 }
 
-template <class T>
+template <typename T>
+void AVLTree<T>::printAscending(AVLNode<T> *r, ostream &out) {
+	if (r == nullptr) return;
+	printAscending(r->left, out);
+	out << r->data.toString() << endl;
+	printAscending(r->right, out);
+}
+
+template <typename T>
+void AVLTree<T>::printDescending(AVLNode<T> *r, ostream &out) {
+	if (r == nullptr) return;
+	printDescending(r->right, out);
+	out << r->data.toString() << endl;
+	printDescending(r->left, out);
+}
+
+template <typename T>
 bool AVLTree<T>::remove(T data) {
 	int befDel = nNodes;
 	root = remove(root, data);
@@ -148,19 +162,19 @@ bool AVLTree<T>::remove(T data) {
 	else return false;
 }
 
-template <class T>
+template <typename T>
 AVLNode<T> *AVLTree<T>::remove(AVLNode<T> *r, T &data) {
 	//TODO
 }
 
-template <class T>
+template <typename T>
 int AVLTree<T>::depth() {
 	int maxDepth = 0;
 	getDepth(root, 0, maxDepth);
 	return maxDepth;
 }
 
-template <class T>
+template <typename T>
 void AVLTree<T>::getDepth(AVLNode<T> *r, int curDepth, int &maxDepth) {
 	if (r == nullptr) return;
 	if (curDepth > maxDepth) maxDepth = curDepth;
@@ -168,7 +182,7 @@ void AVLTree<T>::getDepth(AVLNode<T> *r, int curDepth, int &maxDepth) {
 	getDepth(r->right, curDepth + 1, maxDepth);
 }
 
-template <class T>
+template <typename T>
 int AVLTree<T>::numOfNodes() {
 	return nNodes;
 }

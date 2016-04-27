@@ -16,6 +16,7 @@ public:
 	bool contains(T data);//TEST
 	void printTree(bool ascending, ostream &out);
 	int depth();
+	float avgDepth();
 	int numOfNodes();
 private:
 	AVLNode<T> *root;
@@ -28,6 +29,7 @@ private:
 	void printAscending(AVLNode<T> *r, ostream &out);
 	void printDescending(AVLNode<T> *r, ostream &out);
 	void getDepth(AVLNode<T> *r, int curDepth, int &maxDepth);
+	void totalDepth(AVLNode<T> *r, int curDepth, float &total);
 	AVLNode<T> *rotate(AVLNode<T> *r, bool left);
 };
 
@@ -186,3 +188,20 @@ template <typename T>
 int AVLTree<T>::numOfNodes() {
 	return nNodes;
 }
+
+template <typename T>
+float AVLTree<T>::avgDepth() {
+	if (root == nullptr) return 0;
+	float total = 0;
+	totalDepth(root, 1, total);
+	return total / nNodes;
+}
+template <typename T>
+void AVLTree<T>::totalDepth(AVLNode<T> *r, int curDepth, float &total) {
+	if (r == nullptr) return;
+	total += curDepth;
+	totalDepth(r->left, curDepth + 1, total);
+	totalDepth(r->right, curDepth + 1, total);
+}
+
+

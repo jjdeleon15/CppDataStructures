@@ -43,6 +43,14 @@ bool operator!=(Person &a, Person &b) {
 	return !(a == b);
 }
 
+ostream &operator<<(ostream &out, const Person &p) {
+	stringstream ss;
+	ss << p.last << ", " << p.first << " " << p.day << p.month << p.year << " "
+		<< p.state << " " << p.bankBal << " " << p.social;
+	out << ss.str();
+	return out;
+}
+
 #endif/* PERSON_H_ */
 Person::Person(string first, string last, int day, int month, 
 	int year, string social, string state, double bankBal) {

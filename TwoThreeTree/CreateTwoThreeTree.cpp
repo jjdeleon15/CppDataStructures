@@ -1,13 +1,31 @@
 #include <iostream>
 #include <fstream>
-#include "PeopleParser.h"
-#include "AVLTree.h"
+#include "TwoThreeTree.h"
+#include "Person.h"
+#include "vector"
+#include "sstream"
 using namespace std;
 
-Person parseLineForPerson(const string line);
+Person *parseLineForPerson(const string line) {
+	stringstream ss(line);
+	vector<string> elems;
+	std::string item;
+    while (getline(ss, item, ' ')) {
+        elems.push_back(item);
+    }
+
+	string social = elems[0];
+	int day = stoi(elems[1].substr(0, 2));
+	int month = stoi(elems[1].substr(2, 2));
+	int year = stoi(elems[1].substr(4));
+	string first = elems[2], last = elems[3];
+	string state = elems[4];
+	double bankBal = stof(elems[5]);
+	return new Person(first, last, day, month, year,social, state, bankBal);
+}
 
 void invalidUsage() {
-	cout << "usage: perAVLTreeTest <filename> [-pd(print, print descending] [maxEntries]\n";
+	cout << "usage: per23Tree <filename> [-pd(print, print descending] [maxEntries]\n";
 	exit(-1);
 }
 
@@ -29,9 +47,9 @@ int main(int argc, char *argv[]) {
 		if (argc == 4) max = stol(argv[3]);
 	} 
 
-	AVLTree<Person> pplTree;
+	B23Tree<Person> pplTree;
 	string line;
-	Person perBuff;
+	Person *perBuff;
 	ifstream fin(argv[1]);
 	if (fin.fail()) {
 		cout << "Could not open file: " << argv[1] << endl;
@@ -44,8 +62,8 @@ int main(int argc, char *argv[]) {
 		pplTree.insert(perBuff);
 	}
 	fin.close();
-	cout << "Stats: " << "Num of Nodes = " << pplTree.numOfNodes() 
-		<< ", Depth = " << pplTree.depth() << endl;
+	cout << "Stats: [ " << "Nodes: " << pplTree.numOfNodes() << " | Data: " << pplTree.numOfData()
+		<< "| Avg Depth: " << pplTree.avgDepth() << " | MaxDepth: " << pplTree.getDepth() << " ]\n";
 	if (printTree) pplTree.printTree(ascending, cout);
 
 	//TODO add search statistics, depth is correct though

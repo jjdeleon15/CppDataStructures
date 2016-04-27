@@ -44,8 +44,9 @@ int main(int argc, char *argv[]) {
 		pplTree.insert(perBuff);
 	}
 	fin.close();
-	cout << "Stats: " << "Num of Nodes = " << pplTree.numOfNodes()
-		<< ", Depth = " << pplTree.depth() << endl;
+	cout << "Stats -> " << "Num of Nodes: " << pplTree.numOfNodes() 
+		<< "| Max Depth: " << pplTree.depth() 
+		<< "| Avg Depth: " << pplTree.avgDepth() << endl;
 	if (printTree) pplTree.printTree(ascending, cout);
 
 	//TODO add search statistics, depth is correct though

@@ -16,6 +16,7 @@ public:
 	bool contains(T data);//TEST
 	void printTree(bool ascending, ostream &out);
 	int depth();
+	float avgDepth();
 	int numOfNodes();
 private:
 	BiNode<T> *root;
@@ -28,6 +29,7 @@ private:
 	void printAscending(BiNode<T> *r, ostream &out);
 	void printDescending(BiNode<T> *r, ostream &out);
 	void getDepth(BiNode<T> *r, int curDepth, int &maxDepth);
+	void totalDepth(BiNode<T> *r, int curDepth, float &total);
 	BiNode<T> *rotate(BiNode<T> *r, bool left);
 };
 
@@ -166,4 +168,19 @@ void BinTree<T>::getDepth(BiNode<T> *r, int curDepth, int &maxDepth) {
 template <typename T>
 int BinTree<T>::numOfNodes() {
 	return nNodes;
+}
+
+template <typename T>
+float BinTree<T>::avgDepth() {
+	if (root == nullptr) return 0;
+	float total = 0;
+	totalDepth(root, 1, total);
+	return total / nNodes;
+}
+template <typename T>
+void BinTree<T>::totalDepth(BiNode<T> *r, int curDepth, float &total) {
+	if (r == nullptr) return;
+	total += curDepth;
+	totalDepth(r->left, curDepth + 1, total);
+	totalDepth(r->right, curDepth + 1, total);
 }
